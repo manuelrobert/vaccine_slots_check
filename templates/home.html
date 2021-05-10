@@ -1,4 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Welcome</h1>
+<h1>Welcome</h1>
+<form method="POST" action="">
+    {{ form.csrf_token }}
+    {{ form.state }}
+    {{ form.district }}
+    <input type="submit" value="Go">
+</form>
+
+<script>
+    let state_select = document.getElementById('state');
+    let district_select = document.getElementById('district');
+    state_select.onchange = () => {
+        console.log('hello');
+        var state = state_select.value;
+        fetch('/district/' + state).then((response) => {
+            response.json().then((data) => {
+                console.log('data', data.districts);
+                let optionHTML = '';
+                for (var i = 0; i < data.districts.length; i++) {
+                    optionHTML = optionHTML + '<option value="' + data.districts[i].id + '">' + data.districts[i].name + '</option>';
+                }
+                district_select.innerHTML = optionHTML;
+            });
+        });
+    }
+</script>
 {% endblock content %}
