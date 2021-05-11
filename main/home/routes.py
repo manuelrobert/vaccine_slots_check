@@ -1,7 +1,7 @@
-from flask import render_template, request, Blueprint, jsonify, json
-from home.forms import SlotCheckForm
+from flask import render_template, request, Blueprint, jsonify
 import requests
 from datetime import date
+from main.home.forms import SlotCheckForm
 
 
 api = 'https://cdn-api.co-vin.in/api'
@@ -14,10 +14,9 @@ def home_view():
     form = SlotCheckForm()
     if request.method == 'POST':
         print(form.district.data, date.today().strftime("%d-%m-%Y"))
-        res = requests.get(api + '/v2/appointment/sessions/public/findByDistrict?district_id=' + form.district.data + '&date=' + '11-05-2021', headers={'content-type': 'application/json', 'User-Agent': ''})
+        res = requests.get(api + '/v2/appointment/sessions/public/calendarByDistrict?district_id=' + form.district.data + '&date=' + '11-05-2021', headers={'content-type': 'application/json', 'User-Agent': ''})
         if res.status_code == 200:
-            print('result', res.json())
-        return 'ok'
+            return jsonify({'centers':res.json()['centers']})
     return render_template('home.html', form=form)
 
 

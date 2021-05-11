@@ -17,7 +17,7 @@
         fetch('/district/' + state).then((response) => {
             response.json().then((data) => {
                 console.log('data', data.districts);
-                let optionHTML = '';
+                let optionHTML = '<option value="None">Select District</option>';
                 for (var i = 0; i < data.districts.length; i++) {
                     optionHTML = optionHTML + '<option value="' + data.districts[i].id + '">' + data.districts[i].name + '</option>';
                 }
