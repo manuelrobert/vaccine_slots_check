@@ -11,8 +11,12 @@
 <script>
     let state_select = document.getElementById('state');
     let district_select = document.getElementById('district');
+    var elmnt = document.createElement('option');
+    elmnt.value = 'None';
+    elmnt.text = 'Select State';
+    elmnt.selected = true;
+    state_select.add(elmnt, 0)
     state_select.onchange = () => {
-        console.log('hello');
         var state = state_select.value;
         fetch('/district/' + state).then((response) => {
             response.json().then((data) => {
