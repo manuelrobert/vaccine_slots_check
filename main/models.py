@@ -9,7 +9,7 @@ class State(db.Model):
     __tablename__ = 'state'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
-    districts = db.relationship('District', backref='state', lazy=True)
+    districts = db.relationship('District', backref='state', cascade="all, delete", lazy=True)
 
     def __repr__(self):
         return f"State('{self.id}', '{self.name}', '{self.districts}')"
@@ -19,7 +19,7 @@ class District(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     state_id = db.Column(db.Integer, db.ForeignKey('state.id'), nullable=False)
-    centers = db.relationship('Center', backref='district', lazy=True)
+    centers = db.relationship('Center', backref='district', cascade="all, delete", lazy=True)
 
     def __repr__(self):
         return f"State('{self.id}', '{self.name}', '{self.state_id}')"
@@ -37,17 +37,19 @@ class Center(db.Model):
     frm = db.Column(db.Time, nullable=False)
     to = db.Column(db.Time, nullable=False)
     fee_type = db.Column(db.Text, nullable=False)
-    sessions = db.relationship('Session', backref='center', lazy=True)
+    sessions = db.relationship('Session', backref='center', cascade="all, delete", lazy=True)
 
 class Session(db.Model):
     __tablename__ = 'session'
     id = db.Column(db.Text, primary_key=True)
     date = db.Column(db.Date, nullable=False)
     available_capacity =  db.Column(db.Integer, nullable=False, default=0)
+    available_capacity_dose1 =  db.Column(db.Integer, nullable=False, default=0)
+    available_capacity_dose2 =  db.Column(db.Integer, nullable=False, default=0)
     min_age_limit = db.Column(db.Integer, nullable=False, default=0)
     vaccine = db.Column(db.Text, nullable=False)
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=False)
-    slots = db.relationship('Slot', backref='session', lazy=True)
+    slots = db.relationship('Slot', backref='session', cascade="all, delete", lazy=True)
 
 class Slot(db.Model):
     __tablename__ = 'slot'
